@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, make_response
+from flask import render_template, request, redirect, make_response, session
 from sqlalchemy.sql import text
 from sqlalchemy.exc import IntegrityError
 from app import app, db
@@ -6,7 +6,7 @@ from checks import auth
 
 @app.get('/')
 def main():
-    if 'user' in request.cookies and request.cookies['user'] != '':
+    if 'user' in session and session['user'] != '':
         return redirect('/welcome')
     return render_template('main.html')
 
@@ -17,19 +17,17 @@ def login():
     }).fetchone()
 
     if q and q[1] == request.form['secret']:
-        r = make_response(redirect('/welcome'))
-        r.set_cookie('user', str(q[0]))
+        session['user'] = q[0]
 
-        return r
+        return redirect('/welcome')
 
     return redirect('/')
 
 @app.get('/out')
 def logout():
-    r = make_response(redirect('/'))
-    r.delete_cookie('user')
+    session['user'] = ''
 
-    return r
+    return redirect('/')
 
 @app.post('/register')
 def register():
@@ -44,18 +42,17 @@ def register():
     except IntegrityError:
         return redirect('/')
 
-    r = make_response(redirect('/welcome'))
-    r.set_cookie('user', str(nid))
+    session['user'] = nid
 
     db.session.commit()
 
-    return r
+    return redirect('/welcome')
 
 @app.get('/welcome')
 @auth
 def welcome():
     q = db.session.execute(text('select * from messages where receiver=:a'), {
-      'a': request.cookies['user']
+      'a': session['user']
     }).fetchall()
 
     return render_template('welcome.html', msgs=q)
@@ -71,7 +68,7 @@ def message():
         try:
             db.session.execute(text('insert into messages (msg, sender, receiver) values (:a, :b, :c)'), {
               'a': request.form['msg'],
-              'b': request.cookies['user'],
+              'b': session['user'],
               'c': q[0]
             })
         except IntegrityError:

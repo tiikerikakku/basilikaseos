@@ -51,7 +51,7 @@
 
   <form action="/change" method="post">
     <input type="text" name="name" placeholder="Uusi nimi" required>
-    <input type="hidden" name="id" value="{{request.cookies['user']}}" required>
+    <input type="hidden" name="id" value="{{session['user']}}" required>
     <input type="submit" value="Vaihda ✒️">
   </form>
 

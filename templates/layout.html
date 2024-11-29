@@ -85,7 +85,7 @@
       <footer>
         <em>
           basilikaseos 2024
-          {% if 'user' in request.cookies and request.cookies['user'] != '' %}
+          {% if 'user' in session and session['user'] != '' %}
             <a href="/out">kirjaudu ulos</a>
           {% endif %}
         </em>
