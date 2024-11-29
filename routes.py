@@ -96,7 +96,7 @@ def change():
     try:
         db.session.execute(text('update users set nick=:a where id=:b'), {
           'a': request.form['name'],
-          'b': request.form['id']
+          'b': session['user']
         })
     except IntegrityError:
         pass
