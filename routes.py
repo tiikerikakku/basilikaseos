@@ -1,4 +1,5 @@
-from flask import render_template, request, redirect, make_response, session
+from flask import render_template, request, redirect, session
+from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.sql import text
 from sqlalchemy.exc import IntegrityError
 from app import app, db
@@ -16,7 +17,7 @@ def login():
       'a': request.form['user']
     }).fetchone()
 
-    if q and q[1] == request.form['secret']:
+    if q and check_password_hash(q[1], request.form['secret']):
         session['user'] = q[0]
 
         return redirect('/welcome')
@@ -33,11 +34,13 @@ def logout():
 def register():
     if request.form['secret'] == '':
         return redirect('/')
+    
+    h = generate_password_hash(request.form['secret'])
 
     try:
         nid = db.session.execute(text('insert into users (nick, secret) values (:a, :b) returning id'), {
           'a': request.form['user'],
-          'b': request.form['secret']
+          'b': h
         }).fetchone()[0]
     except IntegrityError:
         return redirect('/')
