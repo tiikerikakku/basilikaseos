@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-normalize@2.0.0/modern-normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap">
+    <style>
+      html {
+        font-family: 'Mulish', sans-serif;
+      }
+
+      main {
+        padding: 5vh 10vw;
+      }
+
+      header {
+        background-color: greenyellow;
+        background-size: cover;
+
+        width: 100%;
+        padding: 40px;
+        min-height: 150px;
+
+        color: whitesmoke;
+        -webkit-text-stroke: 1px black;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      header h1 {
+        font-weight: 1000;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        max-width: 400px;
+      }
+
+      form input, form textarea, form div {
+        margin-bottom: 5px;
+      }
+
+      form input[type=submit] {
+        width: fit-content;
+      }
+
+      form textarea {
+        resize: vertical;
+      }
+
+      footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: lightsteelblue;
+      }
+
+      footer a:any-link {
+        color: inherit;
+      }
+    </style>
+
+    {% block meta %}{% endblock %}
+
+    <title>basilikaseos</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>basilikaseos</h1>
+      </header>
+
+      {% block stuff %}{% endblock %}
+
+      <footer>
+        <em>
+          basilikaseos 2024
+          {% if 'user' in request.cookies and request.cookies['user'] != '' %}
+            <a href="/out">kirjaudu ulos</a>
+          {% endif %}
+        </em>
+      </footer>
+    </main>
+  </body>
+</html>

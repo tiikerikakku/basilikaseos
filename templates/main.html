@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block meta %}
+
+<style>
+  img {
+    height: 75px;
+    width: 400px;
+    max-width: 100%;
+  }
+</style>
+
+{% endblock %}
+
+{% block stuff %}
+
+<section>
+  <h2>Nyt olisi aika kirjautua.</h2>
+  <form action="/in" method="post">
+    <input type="text" name="user" placeholder="Käyttäjä" required>
+    <input type="password" name="secret" placeholder="Salasana" required>
+    <input type="submit" value="Kirjaudu 💥">
+  </form>
+  <img src="https://tiikerikakku.github.io/rojusailio/beautiful_divider.svg" alt="sisällönjakaja">
+  <p>👇 <mark>Rekisteröidy tästä</mark></p>
+  <form action="/register" method="post">
+    <input type="text" name="user" placeholder="Valitse käyttäjätunnus" required>
+    <input type="password" name="secret" placeholder="Valitse salasana" required>
+    <input type="submit" value="Luo tili ✨">
+  </form>
+</section>
+
+{% endblock %}

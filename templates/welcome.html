@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block meta %}
+
+<style>
+  p {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+
+  img {
+    height: 75px;
+    width: 400px;
+    max-width: 100%;
+
+    filter: hue-rotate(210deg);
+  }
+</style>
+
+{% endblock %}
+
+{% block stuff %}
+
+<section>
+  <h2>Lähetä viesti</h2>
+  <form action="/message" method="post">
+    <input type="text" name="name" placeholder="Käyttäjälle..." required>
+    <textarea name="msg" rows="5" placeholder="Kirjoita viesti tähän." required></textarea>
+    <input type="submit" value="Lähetä 📨">
+  </form>
+
+  <h2>Saapuneet viestit</h2>
+
+  {% for msg in msgs %}
+    <em>Kirjoittanut: {{msg[2]}}</em>
+    <p>{{msg[1]|safe}}</p>
+  {% else %}
+    <p>Et ole saanut yhtäkään viestiä.</p>
+  {% endfor %}
+
+  <img src="https://tiikerikakku.github.io/rojusailio/beautiful_divider.svg" alt="sisällönjakaja">
+
+  <h3>Löydä käyttäjänimi id:n perusteella</h3>
+
+  <form action="/nick" method="post">
+    <input type="number" name="id" placeholder="id" required>
+    <input type="submit" value="Etsi ☎️">
+  </form>
+
+  <h3>Vaihda käyttäjänimeäsi</h3>
+
+  <form action="/change" method="post">
+    <input type="text" name="name" placeholder="Uusi nimi" required>
+    <input type="hidden" name="id" value="{{request.cookies['user']}}" required>
+    <input type="submit" value="Vaihda ✒️">
+  </form>
+
+{% endblock %}
