@@ -90,7 +90,9 @@ def message():
 @app.post('/nick')
 @auth
 def nick():
-    q = db.session.execute(text(f'select nick from users where id={request.form["id"]}')).fetchone()
+    q = db.session.execute(text(f'select nick from users where id=:a'), {
+      'a': request.form['id']
+    }).fetchone()
 
     if q:
         return q[0]
