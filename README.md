@@ -2,7 +2,7 @@
 
 env specs:
 
-env```
+```env
 DATABASE=postgresql:///somedb
 SECRET=asecret
 ```
